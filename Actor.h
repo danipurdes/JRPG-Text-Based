@@ -6,7 +6,6 @@
 class Actor {
 public:
 	std::string name;
-	int team_id;
 	int health_cur;
 	int health_max;
 	int action_points;
@@ -15,7 +14,7 @@ public:
 	float accuracy;
 	//etc
 
-	Actor(std::string,int,int,int,int,int,float);
+	Actor(std::string,int,int,int,int,float);
 	~Actor();
 
 	void attack();

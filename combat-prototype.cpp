@@ -2,12 +2,13 @@
 #include <string>
 
 #include "Actor.h"
-#include "PlayerActor.h"
-#include "EnemyActor.h"
+//#include "PlayerActor.h"
+//#include "EnemyActor.h"
 
-//static Actor* a;
-//static Actor* e;
-static vector<Actor*> combatants;
+static Actor* a;
+static Actor* e;
+static std::vector<Actor*> players;
+static std::vector<Actor*> enemies;
 
 void printMessageCombatantStatus () {
 	std::cout << ":::Combatant Status:::" << std::endl;
@@ -42,8 +43,9 @@ int main(int argc, const char** argv) {
 	std::cout << "Hello, " << name << std::endl;
 
 	// Print Actor's get_info()
-	a = new Actor(name, 10, 3, 6, 4, 0.5f);
+	Actor* a = new Actor(name, 10, 3, 6, 4, 0.5f);
 	std::cout << a->get_info() << std::endl;
+	players = new std::vector<Actor*>;
 
 	std::cin.ignore();
 	pressEnterToContinue();
