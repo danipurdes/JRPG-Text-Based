@@ -116,9 +116,11 @@ int main(int argc, const char** argv) {
 				}
 
 				if (*currentParty == players) {
-					std::cout << ":::" << i->name << "'s " << " Turn:::" << std::endl;
-					std::cout << "Type (a)ttack to strike with " << i->name << "!" << std::endl;
-					std::cout << "Type (s)pecial to cast a fireball with " << i->name << "!" << std::endl;
+					std::cout << ":::" << i->name << "'s " << "Turn:::" << std::endl;
+					std::cout << "a - standard attack" << std::endl;
+					std::cout << "s - special attack" << std::endl;
+					std::cout << "d - guard" << std::endl;
+					std::cout << "f - item menu" << std::endl;
 					std::cout << ">";
 
 					i->armor_cur = i->armor_def;
@@ -179,7 +181,7 @@ int main(int argc, const char** argv) {
 						}
 						case 'd' : {
 							std::cout << i->name << " braces themselves!" << std::endl;
-							i->armor_cur += std::max(1, (int).5f);
+							i->defend();
 
 							pressEnterToContinue();
 							
@@ -187,22 +189,66 @@ int main(int argc, const char** argv) {
 
 							break;
 						}
+						case 'f' : {
+							std::cout << "Select an item by index number:" << std::endl;
+							std::cout << "1. potion (+10 He)" << std::endl;
+							std::cout << "2. strength herb (+4 Da)" << std::endl;
+							std::cout << "3. focus brace (x2 Ac)" << std::endl;
+							std::cout << "4. grenade (8 Da)" << std::endl;
+							std::string choice_str;
+							int choice_ind;
+							getline(std::cin, choice_str);
+							auto last = otherParty->back();
+							if (choice_str != "") {
+								choice_ind = stoi(choice_str);
 
+								
 
+								switch (choice_ind) {
+									case 1 : {
+										std::cout << "Used a potion!" << std::endl;
+										i->health_cur = std::min(i->health_cur + 10, i->health_max);
+										break;
+									}
+									case 2 : {
+										std::cout << "Used a strength herb!" << std::endl;
+										i->damage_cur += 4;
+										break;
+									}
+									case 3 : {
+										std::cout << "Used a focus brace!" << std::endl;
+										i->accuracy_cur = std::min(i->accuracy_cur * 2, 1.0f);
+										break;
+									}
+									case 4 : {
+										std::cout << "Used a grenade!" << std::endl;
+										last->health_cur = 8 - last->armor_cur; 
+										break;
+									}
+								}
+							}
+
+							pressEnterToContinue();
+
+							if (last->health_cur <= 0) {
+								otherParty->pop_back();
+							}
+							
+							printMessageCombatantStatus();
+						}
 						
 					}
-
 					//playerAttack();
 				}
 				else {
 					auto last = otherParty->back();
-					std::cout << i->name << " swings at " << last->name << "!" << std::endl;
+					//std::cout << i->name << " swings at " << last->name << "!" << std::endl;
 					int dmg = i->damage_cur;
 					int arm = last->armor_cur;
 					int acc = i->accuracy_cur * 100;
 					
 					int roll = rand() % 100;
-					std::cout << "Rolled " << roll << " | Needed less than " << acc << std::endl;
+					//std::cout << "Rolled " << roll << " | Needed less than " << acc << std::endl;
 					if (acc >= roll) {
 						int amount_damage = std::max(0, (dmg - arm));
 						last->health_cur -= amount_damage;
@@ -211,20 +257,23 @@ int main(int argc, const char** argv) {
 					else {
 						std::cout << i->name << " missed " << last->name << "!" << std::endl;
 					}
-					pressEnterToContinue();
+					//pressEnterToContinue();
 
 					if (last->health_cur <= 0) {
 						otherParty->pop_back();
 					}
 
-					printMessageCombatantStatus();
+					//printMessageCombatantStatus();
 					
 					//enemyAttack();
 				}
 				
-				pressEnterToContinue();
 			}
-			
+
+			pressEnterToContinue();
+			printMessageCombatantStatus();
+			pressEnterToContinue();
+
 			std::vector<Actor*>* t = currentParty;
 			currentParty = otherParty;
 			otherParty = t;

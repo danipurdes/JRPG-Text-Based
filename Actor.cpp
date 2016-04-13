@@ -17,3 +17,7 @@ std::string Actor::get_info () {
 	info += "Ac(" + std::to_string(accuracy_cur) + ")";
 	return info;
 }
+
+void Actor::defend () {
+	armor_cur += std::max(1, (int).5f);
+}
