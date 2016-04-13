@@ -8,16 +8,21 @@ public:
 	std::string name;
 	int health_cur;
 	int health_max;
-	int action_points;
-	int damage;
-	int armor;
-	float accuracy;
+	int action_points_cur;
+	int action_points_max;
+	int damage_cur;
+	int damage_def;
+	int armor_cur;
+	int armor_def;
+	float accuracy_cur;
+	float accuracy_def;
 	//etc
 
 	Actor(std::string,int,int,int,int,float);
 	~Actor();
 
 	void attack();
+	void special();
 	void defend();
 	std::string get_info();
 };
